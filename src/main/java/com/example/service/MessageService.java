@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
@@ -33,5 +34,9 @@ public class MessageService {
 
     public Message updateMessageById (Integer id){
         messageRepository.updatedMsgById(id);
+    }
+
+    public ResponseEntity<Message> getAllMsgByUser(Integer acc_id){
+        messageRepository.updatedMsgById(acc_id);
     }
 }

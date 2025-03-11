@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.Repository.MessageRepository;
+
 import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.service.AccountService;
@@ -48,7 +48,7 @@ public class SocialMediaController {
         return messageService.getAllMessages();
     }
 
-    @GetMapping("/{messageId}")
+    @GetMapping("/messages/{messageId}")
     public ResponseEntity<Message> getMessageById(@PathVariable Integer id){
         Optional<Message> user = messageService.getMessageById(id);
         return user.map(ResponseEntity::ok)
@@ -56,15 +56,20 @@ public class SocialMediaController {
 
     }
 
-    @DeleteMapping("/{messageId}")
+    @DeleteMapping("/messages/{messageId}")
     public ResponseEntity<Void> deleteMessage(@PathVariable Integer id) {
         messageService.deleteMessage(id);
     }
 
-    @PatchMapping("/{messageId}")
+    @PatchMapping("/messages/{messageId}")
     public ResponseEntity<Message> updatedMsgById(@PathVariable Integer id){
         Optional<Message> message = messageService.updateMessageById(id);
-    } 
+    }
+    
+    @GetMapping("/accounts/{accountId}/messages")
+    public ResponseEntity<Message> getMessageByUser(@PathVariable Integer account_id){
+        return messageService.getAllMsgByUser( account_id);
+    }
 
 
 
