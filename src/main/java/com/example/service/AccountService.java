@@ -13,16 +13,13 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Accounts> getAllAccounts(){
-        return accountRepository.findAll();
-
+    
+    public Account createAccount(Account account) {
+        return accountRepository.save(account);
     }
 
-    public Optional<Account> getUserById(Long id) {
-        return accountRepository.findById(id);
+    public Account loginAccount(Account account) {
+        return accountRepository.save(account);
     }
 
-    public Account createAccount(Long id) {
-        accountRepository.deleteById(id);
-    }
 }
