@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.repository.MessageRepository;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
