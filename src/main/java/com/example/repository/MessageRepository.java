@@ -22,7 +22,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer>  {
 
 
     @Query("SELECT * FROM Message")
-    String findAllMessages();
+    List<Message> findAllMessages();
 
 
     @Query("INSERT INTO Message(messageId, postedBy, messageText, timePostedEpoch) VALUES (:messageIdVar, :postedByVar, :messageTextVar, :timePostedEpochVar)")
@@ -30,7 +30,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer>  {
 
 
     @Query("UPDATE Message SET messageText = :messageTextVar WHERE messageId = :messageIdVar")
-    int updateMessageById();
+    int updateMessageById(Integer id);
 
 
     @Query("FROM Message WHERE posted_by = :posted_byVar")

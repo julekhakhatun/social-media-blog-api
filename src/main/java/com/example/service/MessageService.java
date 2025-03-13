@@ -17,7 +17,7 @@ public class MessageService {
     private MessageRepository messageRepository;
 
     public List<Message> getAllMessages(){
-        return messageRepository.findAll();
+        return messageRepository.findAllMessages();
     }
 
     public Optional<Message> getMessageById(Integer id){
@@ -29,14 +29,16 @@ public class MessageService {
     }
 
     public void deleteMessage (Integer id){
-        messageRepository.deleteMessage(id);
+        messageRepository.deleteByMessageId(id);
     }
 
     public Message updateMessageById (Integer id){
-        messageRepository.updatedMsgById(id);
+        messageRepository.updateMessageById(id);
+        return null;
     }
 
     public ResponseEntity<Message> getAllMsgByUser(Integer acc_id){
-        messageRepository.updatedMsgById(acc_id);
+        messageRepository.findByUserName(acc_id);
+        return null;
     }
 }
