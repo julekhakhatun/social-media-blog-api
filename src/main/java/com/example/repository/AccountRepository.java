@@ -1,6 +1,7 @@
 package com.example.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ import com.example.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("FROM Account WHERE username = :usernameVar")
-    List<Account> findByUserName (@Param("usernameVar") String userName);
+    Optional<Account>findByUserName (@Param("usernameVar") String userName);
 
     
     @Query("FROM Account WHERE accountId = :accountIdVar")

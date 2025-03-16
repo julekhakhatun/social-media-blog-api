@@ -3,6 +3,7 @@ package com.example.controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -30,18 +31,38 @@ public class SocialMediaController {
     private MessageService messageService;
 
     @PostMapping
-    public Account createAccount(@RequestBody Account user){
-        return accountService.createAccount(user);
+    public ResponseEntity<?> createAccount(@RequestBody Account user){
+        try {
+            Account createdAccount = accountService.createAccount(user);
+            return ResponseEntity.ok(createdAccount);
+        } catch (DuplicateUsernameException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (InvalidAccountException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        
     }
 
     @PostMapping
-    public Account loginAccount(@RequestBody Account user){
-        return accountService.loginAccount(user);
+    public ResponseEntity<?> loginAccount(@RequestBody Account account){
+        try {
+            Account loggedInAccount = accountService.loginAccount(account.getUsername(), account.getPassword());
+            return ResponseEntity.ok(loggedInAccount);
+        } catch (InvalidLoginException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+       
     }
 
     @PostMapping
-    public Message createMessage(@RequestBody Message message){
-        return messageService.createMessage(message);
+    public ResponseEntity<?> createMessage(@RequestBody Message message){
+        try {
+            Message createdMessage = messageService.createMessage(message);
+            return ResponseEntity.ok(createdMessage);
+        } catch (InvalidMessageException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+       
     }
 
     @GetMapping
