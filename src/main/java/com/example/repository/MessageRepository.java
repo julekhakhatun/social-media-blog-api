@@ -34,6 +34,6 @@ public interface MessageRepository extends JpaRepository<Message, Integer>  {
 
 
     @Query("FROM Message WHERE posted_by = :posted_byVar")
-    List<Account> findByUserName (@Param("posted_by") int posted_by);
+    List<Message> findByUserName (@Param("posted_by") int posted_by);
 
 }

@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,11 +68,11 @@ public class SocialMediaController {
 
     @GetMapping
     public ResponseEntity<List<Message>> retrieveAllMessages(){
-        List<Message> messages = MessageRepository.findAll();
+        final List<Message> messages = messageService.getAllMessages();
         return ResponseEntity.ok(messages);
     }
 
-    @GetMapping("/messages/{messageId}")
+    @GetMapping("/{messageId}")
     public ResponseEntity<Message> getMessageById(@PathVariable Integer id){
         Optional<Message> user = messageService.getMessageById(id);
         return user.map(ResponseEntity::ok)
@@ -79,19 +80,34 @@ public class SocialMediaController {
 
     }
 
-    @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity<Void> deleteMessage(@PathVariable Integer id) {
-        messageService.deleteMessage(id);
+    /**
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer id) {
+        int deletedRows = messageService.deleteMessage(id);
+        if (deletedRows > 0) {
+            return ResponseEntity.ok(deletedRows);
+        }
+        return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/messages/{messageId}")
-    public ResponseEntity<Message> updatedMsgById(@PathVariable Integer id){
-        Optional<Message> message = messageService.updateMessageById(id);
+    @PatchMapping("/{messageId}")
+    public ResponseEntity<?> updatedMsgById(@PathVariable Integer id, @RequestBody Map<Integer, String> updates) {
+        try {
+            int updatedRows = messageService.updateMessageById(id, updates.get("messageText"));
+            return ResponseEntity.ok(updatedRows);
+        } catch (InvalidMessageException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+       
     }
     
-    @GetMapping("/accounts/{accountId}/messages")
+    @GetMapping("/{accountId}/messages")
     public ResponseEntity<Message> getMessageByUser(@PathVariable Integer account_id){
-        return messageService.getAllMsgByUser( account_id);
+        List<Message> messages = messageService.getAllMsgByUser(account_id);
+        return ResponseEntity.ok(messages);
     }
 
 

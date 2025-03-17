@@ -45,17 +45,32 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public void deleteMessage (Integer id){
-        messageRepository.deleteByMessageId(id);
+    public int deleteMessage (Integer id){
+        if (messageRepository.deleteByMessageId(id) != null) {
+            return 1;
+        }
+        return 0;
     }
 
-    public Message updateMessageById (Integer id){
-        messageRepository.updateMessageById(id);
-        return null;
+    public int updateMessageById (Integer id, String newMessageText){
+        if (newMessageText == null || newMessageText.isBlank()) {
+            throw new InvalidMessgaeException("Message text cannot be blank");
+        }
+        if(newMessageText.length() > 255) {
+            throw new InvalidMessageException ("Message text cannot exceed 255 characters");
+        }
+
+        Message existingMessage = messageRepository.findById(id)
+                .orElseThrow(() -> new InvalidMessgeException("Message with ID " + id + "  not found"));
+
+        existingMessage.setMessageText(newMessageText);
+        messageRepository.save(existingMessage);
+        return 1;
     }
 
+    @SuppressWarnings("unchecked")
     public ResponseEntity<Message> getAllMsgByUser(Integer acc_id){
-        messageRepository.findByUserName(acc_id);
-        return null;
+        return (ResponseEntity<Message>) messageRepository.findByUserName(acc_id);
+       
     }
 }
