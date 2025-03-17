@@ -68,7 +68,7 @@ public class MessageService {
         return 1;
     }
 
-    @SuppressWarnings("unchecked")
+   
     public ResponseEntity<Message> getAllMsgByUser(Integer acc_id){
         return (ResponseEntity<Message>) messageRepository.findByUserName(acc_id);
        
