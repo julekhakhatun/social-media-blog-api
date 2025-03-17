@@ -66,8 +66,9 @@ public class SocialMediaController {
     }
 
     @GetMapping
-    public List<Message> retrieveAllMessages(){
-        return messageService.getAllMessages();
+    public ResponseEntity<List<Message>> retrieveAllMessages(){
+        List<Message> messages = MessageRepository.findAll();
+        return ResponseEntity.ok(messages);
     }
 
     @GetMapping("/messages/{messageId}")
