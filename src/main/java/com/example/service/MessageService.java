@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.io.InvalidClassException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,13 +33,13 @@ public class MessageService {
      */
     public Message createMessage(Message message){
         if (message.getMessageText() == null || message.getMessageText().isBlank()) {
-            throw new InvalidMessageException("Message text cannot be blank");
+            throw new InvalidClassException("Message text cannot be blank");
         }
         if (message.getMessageText().length() > 255) {
-            throw new InvalidMessageException("Message text cannot exceed 255 characters");
+            throw new InvalidClassException("Message text cannot exceed 255 characters");
         }
         if (!AccountRepository.findById(message.getPostedBy())) {
-            throw new InvalidMessageException("Posted bust reference an existing user");
+            throw new InvalidClassException("Posted bust reference an existing user");
         }
 
         message.setMessageId(UUID.randomUUID().toString());
@@ -54,14 +55,14 @@ public class MessageService {
 
     public int updateMessageById (Integer id, String newMessageText){
         if (newMessageText == null || newMessageText.isBlank()) {
-            throw new InvalidMessgaeException("Message text cannot be blank");
+            throw new InvalidClassException("Message text cannot be blank");
         }
         if(newMessageText.length() > 255) {
-            throw new InvalidMessageException ("Message text cannot exceed 255 characters");
+            throw new InvalidClassException ("Message text cannot exceed 255 characters");
         }
 
         Message existingMessage = messageRepository.findById(id)
-                .orElseThrow(() -> new InvalidMessgeException("Message with ID " + id + "  not found"));
+                .orElseThrow(() -> new InvalidClassException("Message with ID " + id + "  not found"));
 
         existingMessage.setMessageText(newMessageText);
         messageRepository.save(existingMessage);

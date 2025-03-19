@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.InvalidClassException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class SocialMediaController {
             return ResponseEntity.ok(createdAccount);
         } catch (DuplicateUsernameException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (InvalidAccountException e) {
+        } catch (InvalidClassException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         
@@ -98,15 +99,15 @@ public class SocialMediaController {
         try {
             int updatedRows = messageService.updateMessageById(id, updates.get("messageText"));
             return ResponseEntity.ok(updatedRows);
-        } catch (InvalidMessageException e) {
+        } catch (InvalidClassException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
        
     }
     
     @GetMapping("/{accountId}/messages")
-    public ResponseEntity<Message> getMessageByUser(@PathVariable Integer account_id){
-        List<Message> messages = messageService.getAllMsgByUser(account_id);
+    public ResponseEntity<List<Message>> getMessageByUser(@PathVariable Integer account_id){
+        List<Message> messages = (List<Message>) messageService.getAllMsgByUser(account_id);
         return ResponseEntity.ok(messages);
     }
 
