@@ -18,8 +18,11 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     /**
+     * In this method, we are creating a new account. The registration will be successful if and only if the username
+     * is not blank, the password is at least 4 characters long, and an Account with that username does not already exist. 
+     *If all these conditions are met, the response body should contain a JSON of the Account, including its accountId.
      * @param account
-     * @return
+     * @return a persisted account entity
      */
     public Account createAccount(Account account) throws InvalidAccountException, DuplicateUsernameException {
         if (account.getUsername() == null || account.getUsername().isBlank()) {
@@ -35,11 +38,12 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    /*
-     * public Account loginAccount(Account account) {
-     * return accountRepository.save(account);
-     * }
-     */
+    /** 
+     * In this method we verify the login of the endpoint.The login will be successful if and only if 
+     * the username and password provided in the request body JSON match a real account existing on the database.
+     * @param username, password
+     * @return a persisted account entity.
+    */
 
     public Account loginAccount(String username, String password)
             throws InvalidAccountException, InvalidLoginException {
