@@ -94,7 +94,7 @@ public class SocialMediaController {
      * @param id
      * @return
      */
-    @DeleteMapping("messages/{messageId}")
+    @DeleteMapping("/messages/{messageId}")
     public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer messageId) {
         int deletedRows = messageService.deleteMessage(messageId);
         if (deletedRows > 0) {
@@ -103,7 +103,7 @@ public class SocialMediaController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("messages/{messageId}")
+    @PatchMapping("/messages/{messageId}")
     public ResponseEntity<?> updatedMsgById(@PathVariable Integer messageId, @RequestBody Message message) {
         try {
             int updatedRows = messageService.updateMessageById(messageId, message);
@@ -114,7 +114,7 @@ public class SocialMediaController {
 
     }
 
-    @GetMapping("accounts/{accountId}/messages")
+    @GetMapping("/accounts/{accountId}/messages")
     public ResponseEntity<List<Message>> getMessageByUser(@PathVariable Integer accountId) {
         List<Message> messages = (List<Message>) messageService.getAllMsgByUser(accountId);
         return ResponseEntity.ok(messages);

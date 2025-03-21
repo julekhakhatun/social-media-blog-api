@@ -1,5 +1,8 @@
 package com.example.service;
 
+import java.lang.StackWalker.Option;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.repository.AccountRepository;
@@ -25,7 +28,8 @@ public class AccountService {
         if (account.getPassword() == null || account.getPassword().length() < 4) {
             throw new InvalidAccountException("Password must be at least 4 characters long");
         }
-        if (accountRepository.findByUserName(account.getUsername()) != null) {
+        Optional<Account> existingAccount = accountRepository.findByUserName(account.getUsername());
+        if (existingAccount.isPresent()) {
             throw new DuplicateUsernameException("Username already exists");
         }
         return accountRepository.save(account);

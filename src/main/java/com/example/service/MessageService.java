@@ -3,6 +3,8 @@ package com.example.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +49,9 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public int deleteMessage(Integer id) {
-        return messageRepository.deleteByMessageId(id);
+    @Transactional
+    public int deleteMessage(Integer messageId) {
+        return messageRepository.deleteByMessageId(messageId);
     }
 
     public int updateMessageById(Integer id, Message message) throws InvalidMessageException {
@@ -67,8 +70,8 @@ public class MessageService {
         return 1;
     }
 
-    public List<Message> getAllMsgByUser(Integer acc_id) {
-        return messageRepository.findByUserName(acc_id);
+    public List<Message> getAllMsgByUser(Integer accountId) {
+        return messageRepository.findByUserId(accountId);
 
     }
 }
